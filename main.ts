@@ -26,9 +26,9 @@ export default class VimModePlugin extends Plugin {
 
 	update() {
 		const editor = this.app.workspace.activeEditor?.editor;	
-		let text: String = "Vim Mode: ";
+		let text: string = "Vim Mode: ";
 		if (editor) {
-			const mode = editor.cm?.cm?.state.vim?.mode?.toUpperCase() ?? "INACTIVE";
+			const mode = (editor as any).cm?.cm?.state.vim?.mode?.toUpperCase() ?? "INACTIVE";
 			text += mode;
 		}
 		this.barText.setText(text);
@@ -59,9 +59,9 @@ class VimModeSettingTab extends PluginSettingTab {
 			.setDesc('Update interval in ms')
 			.addText(text => text
 				.setPlaceholder('X ms')
-				.setValue(this.plugin.settings.interval)
+				.setValue(String(this.plugin.settings.interval))
 				.onChange(async (value) => {
-					this.plugin.settings.interval = value;
+					this.plugin.settings.interval = parseInt(value);
 					await this.plugin.saveSettings();
 				}));
 	}
